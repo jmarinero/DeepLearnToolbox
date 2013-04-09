@@ -9,7 +9,7 @@ for output = {'sigm', 'linear', 'softmax'}
         y=(y==repmat(max(y,[],2),1,size(y,2)));
     end
     
-    for activation_function = {'sigm', 'tanh_opt'}
+    for activation_function = {'sigm', 'tanh_opt', 'rect_lun'}
         for dropoutFraction = {0 rand()}
             nn = nnsetup([5 3 4 2]);
 

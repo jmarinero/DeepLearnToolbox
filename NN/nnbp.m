@@ -18,7 +18,7 @@ function nn = nnbp(nn)
             case 'tanh_opt'
                 d_act = 1.7159 * 2/3 * (1 - 1/(1.7159)^2 * nn.a{i}.^2);
             case 'rect_lun'
-                d_act = double(nn.a(i)>0);                
+                d_act = double(nn.a{i}>0);                
         end
         
         if(nn.nonSparsityPenalty>0)

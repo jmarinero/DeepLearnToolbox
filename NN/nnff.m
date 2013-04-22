@@ -46,8 +46,21 @@ function nn = nnff(nn, x, y)
             nn.a{n} = nn.a{n - 1} * nn.W{n - 1}';
         case 'softmax'
             nn.a{n} = nn.a{n - 1} * nn.W{n - 1}';
-            nn.a{n} = exp(bsxfun(@minus, nn.a{n}, max(nn.a{n},[],2)));
-            nn.a{n} = bsxfun(@rdivide, nn.a{n}, sum(nn.a{n}, 2)); 
+            
+            %machine limits
+            limsupd = log(realmax/size(nn.a{n},2));
+            limsupn = log(realmax);
+            liminf = log(eps);
+            
+            %superior limit
+            numerator   = bsxfun(@min, nn.a{n}, limsupn);
+            denominator = bsxfun(@min, nn.a{n}, limsupd);
+            
+            %inferior limit
+            numerator   = bsxfun(@max, numerator,   liminf);
+            denominator = bsxfun(@max, denominator, liminf);
+            
+            nn.a{n} = bsxfun(@rdivide, exp(numerator), sum(exp(denominator), 2));
     end
 
     %error and loss
